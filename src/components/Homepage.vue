@@ -20,7 +20,7 @@
         <nav class="nav-menu">
           <ul>
             <li><router-link to="/" class="nav-link">Home</router-link></li>
-            <li>
+            <!-- <li>
               <router-link to="/about" class="nav-link">About</router-link>
             </li>
             <li>
@@ -30,13 +30,13 @@
             </li>
             <li>
               <router-link to="/contact" class="nav-link">Contact</router-link>
-            </li>
+            </li> -->
           </ul>
         </nav>
       </div>
     </header>
 
-    <!-- Hero Section with Carousel -->
+    <!-- Hero Section with Carousel and Text Box -->
     <section class="hero">
       <div class="container hero-container">
         <!-- Image Carousel (Left Column) -->
@@ -54,7 +54,7 @@
 
         <!-- Text Content (Right Column) with Translucent Overlay -->
         <div class="hero-content">
-          <div class="text-layer">
+          <div class="text-layer hero-textbox">
             <h1 class="hero-title">
               Observing New Behaviours in Your Teenage Boy Related to Gaming?
             </h1>
@@ -71,31 +71,33 @@
 
     <!-- "Their Game World" Section -->
     <section class="section game-world">
-      <div class="container">
-        <div class="text-layer">
+      <div class="container game-world-container">
+        <!-- Small black box around the heading -->
+        <div class="section-title-box">
           <h2 class="section-title">Their Game World</h2>
-          <div class="cards">
-            <div class="card">
-              <h3 class="card-title">Identifying Influences</h3>
-              <p class="card-text">
-                Explore common signs of gaming-related behavioral changes and
-                potential triggers.
-              </p>
-            </div>
-            <div class="card">
-              <h3 class="card-title">Decoding Digital Life</h3>
-              <p class="card-text">
-                Understand how in-game experiences might shape offline
-                interactions and friendships.
-              </p>
-            </div>
-            <div class="card">
-              <h3 class="card-title">Gaming’s Pull</h3>
-              <p class="card-text">
-                Dive into the immersive nature of modern games and how they keep
-                teens hooked.
-              </p>
-            </div>
+        </div>
+        <!-- Cards row -->
+        <div class="cards">
+          <div class="card text-layer">
+            <h3 class="card-title">Identifying Influences</h3>
+            <p class="card-text">
+              Explore common signs of gaming-related behavioral changes and
+              potential triggers.
+            </p>
+          </div>
+          <div class="card text-layer">
+            <h3 class="card-title">Decoding Digital Life</h3>
+            <p class="card-text">
+              Understand how in-game experiences might shape offline
+              interactions and friendships.
+            </p>
+          </div>
+          <div class="card text-layer">
+            <h3 class="card-title">Gaming’s Pull</h3>
+            <p class="card-text">
+              Dive into the immersive nature of modern games and how they keep
+              teens hooked.
+            </p>
           </div>
         </div>
       </div>
@@ -123,7 +125,7 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="container footer-container">
-        <div class="text-layer">
+        <div class="text-layer footer-textbox">
           <p>© 2025 Digital Parenting. All rights reserved.</p>
           <div class="footer-links">
             <router-link to="/privacy" class="footer-link"
@@ -172,6 +174,24 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
+:root {
+  --primary-color: #000; /* Black shade */
+  --secondary-color: #ffffff;
+  --accent-color: #3498db;
+  --light-gray: #f7f7f7;
+  --dark-gray: #555555;
+  --font-family: "Roboto", sans-serif;
+}
+
+.home-page {
+  font-family: var(--font-family);
+  color: var(--dark-gray);
+  background-color: var(--secondary-color);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
 /* Background Video */
 #bg-video {
   position: fixed;
@@ -184,40 +204,7 @@ export default {
   z-index: -1;
 }
 
-/* Global Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* CSS Variables for theming */
-:root {
-  --primary-color: #2c3e50;
-  --secondary-color: #ffffff;
-  --accent-color: #3498db;
-  --light-gray: #f7f7f7;
-  --dark-gray: #555555;
-  --font-family: "Roboto", sans-serif;
-}
-
-/* Base styles */
-.home-page {
-  font-family: var(--font-family);
-  color: var(--dark-gray);
-  background-color: var(--secondary-color);
-  display: flex;
-  flex-direction: column;
-}
-
-/* Container for consistent width */
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Navbar Styles */
+/* Navbar */
 .navbar {
   background-color: var(--primary-color);
   color: var(--secondary-color);
@@ -257,46 +244,47 @@ export default {
   color: var(--accent-color);
 }
 
-/* Hero Section */
-.hero {
-  background-color: var(--light-gray);
-  padding: 3rem 0;
+/* Content Area */
+.content-area {
+  max-width: 1200px;
+  margin: 4rem auto 2rem;
+  padding: 0 1rem;
+  z-index: 1;
 }
+
+/* Hero Section */
 .hero-container {
   display: flex;
-  align-items: stretch; /* Force columns to equal height */
+  align-items: stretch;
   justify-content: space-between;
   gap: 1.5rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  height: 400px;
+  margin-top: 2rem; /* Moves hero down from navbar */
+  margin-left: 2rem;
 }
-.hero-image {
-  flex: 1 1 50%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.hero-image,
+.hero-content {
+  width: 50%;
+  height: 100%;
 }
 .carousel-image {
   width: 100%;
   height: 100%;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  object-fit: contain;
+  object-fit: cover;
 }
-.hero-content {
-  flex: 1 1 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
+
+/* Text Layer: Black translucent overlay */
 .text-layer {
   background: rgba(0, 0, 0, 0.6);
-  padding: 30px;
-  border-radius: 8px;
   color: #fff;
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -307,15 +295,15 @@ export default {
   margin-bottom: 1rem;
 }
 .hero-description {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin-bottom: 1.5rem;
 }
 .cta-button {
   background-color: var(--accent-color);
   color: var(--secondary-color);
   border: none;
-  padding: 0.85rem 1.75rem;
-  font-size: 1.1rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -325,54 +313,84 @@ export default {
 }
 
 /* Section Titles */
-.section {
-  padding: 3rem 0;
-}
 .section-title {
   text-align: center;
   font-size: 2rem;
-  color: var(--primary-color);
-  margin-bottom: 2rem;
+  margin: 0;
+}
+/* Update: Change text color of "Their Game World" heading to white */
+.section-title-box .section-title {
+  color: #fff;
 }
 
-/* Cards for "Their Game World" */
+/* "Their Game World" Section */
+.game-world-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1rem; /* Spacing around the section */
+  text-align: center;
+}
+.section-title-box {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  padding: 5px 15px;
+  margin-bottom: 2rem;
+}
 .cards {
   display: flex;
   gap: 1.5rem;
+  justify-content: center; /* Center all cards horizontally */
   flex-wrap: wrap;
-  justify-content: space-between;
 }
-.card {
-  background-color: var(--light-gray);
-  flex: 1 1 calc(33.33% - 1rem);
+.card.text-layer {
+  background: rgba(0, 0, 0, 0.655);
+  color: #fff;
   padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transition: transform 0.3s, box-shadow 0.3s;
+  width: 300px; /* Fixed width for uniform cards */
 }
-.card:hover {
+.card.text-layer:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
 }
 .card-title {
   font-size: 1.4rem;
   margin-bottom: 0.75rem;
-  color: var(--primary-color);
 }
 .card-text {
   font-size: 1rem;
   line-height: 1.5;
-  color: var(--dark-gray);
 }
 
-/* Placeholder image for "Understanding Their Play" */
+/* "Understanding Their Play" Section */
+.section.understanding-play {
+  padding: 3rem 0;
+}
 .placeholder-image img {
   width: 100%;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Footer Styles */
+/* Word Cloud Section */
+.wordcloud-section {
+  margin-bottom: 2rem;
+}
+.word-cloud {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  padding: 1rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  min-height: 300px;
+}
+
+/* Footer */
 .footer {
   background-color: var(--primary-color);
   color: var(--secondary-color);
@@ -386,6 +404,11 @@ export default {
   align-items: center;
   gap: 1rem;
 }
+.footer-textbox {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 8px;
+}
 .footer-links a {
   color: var(--secondary-color);
   text-decoration: none;
@@ -397,26 +420,33 @@ export default {
   text-decoration: underline;
 }
 
-/* Responsive Styles */
+/* Responsive */
 @media (max-width: 768px) {
   .hero-container {
     flex-direction: column;
     align-items: center;
+    height: auto;
+    margin-top: 1rem;
   }
   .hero-image,
   .hero-content {
-    flex: 1 1 100%;
+    width: 100%;
     text-align: center;
     height: auto;
   }
-  .text-layer {
-    height: auto;
+  .hero-title {
+    font-size: 2rem;
+  }
+  .hero-description {
+    font-size: 1rem;
   }
   .cards {
     flex-direction: column;
+    align-items: center;
   }
-  .card {
-    flex: 1 1 100%;
+  .card.text-layer {
+    width: 100%;
+    max-width: 400px;
   }
 }
 </style>

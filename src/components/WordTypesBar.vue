@@ -20,7 +20,7 @@
         <nav class="nav-menu">
           <ul>
             <li><router-link to="/" class="nav-link">Home</router-link></li>
-            <li>
+            <!-- <li>
               <router-link to="/about" class="nav-link">About</router-link>
             </li>
             <li>
@@ -30,7 +30,7 @@
             </li>
             <li>
               <router-link to="/contact" class="nav-link">Contact</router-link>
-            </li>
+            </li> -->
           </ul>
         </nav>
       </div>

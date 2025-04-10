@@ -3,58 +3,44 @@
     <!-- Top Hero/Intro Section -->
     <section class="hero-section">
       <h1 class="hero-title">Noticing Shifts</h1>
-      <p class="hero-subtitle">Learn how gaming might<br />be playing a role</p>
+      <p class="hero-subtitle">
+        Learn how gaming might<br />
+        be playing a role
+      </p>
     </section>
 
-    <!-- "Research Offers Insights" Section with Image on the Left -->
-    <section class="content-block image-row">
-      <!-- Image Column -->
-      <div class="image-col">
-        <!-- Replace with your desired image path -->
-        <img
-          src="src/assets/5.png"
-          alt="Research Insights Illustration"
-          class="content-image"
-        />
-      </div>
-
-      <!-- Text Column -->
-      <div class="text-col">
-        <h3 class="block-heading">
-          Seeing Changes in Your Son's Gaming Behaviour
-        </h3>
-        <h2 class="subheading">Research Offers Insights</h2>
-        <p class="block-paragraph">
-          As parents, you're often the first to notice subtle shifts in your
-          teenager's behaviour. If excessive gaming seems linked to increased
-          irritability, withdrawal, or academic struggles, your concerns are
-          valid. Research is exploring these connections.
-        </p>
-        <p class="block-paragraph">
-          Studies suggest that significant gaming can be associated with
-          emotional and behavioural changes in teens (Anderson et al., 2010).
-          The WHO highlights the importance of balanced screen time for
-          adolescent mental health (WHO, 2024).
-        </p>
-        <p class="block-source">
-          Source: World Health Organization. (2024, September 25). Retrieved
-          from
-          <a
-            href="https://www.who.int/europe/news/item/25-09-2024-teens--screens-and-mental-health"
-            target="_blank"
-            >https://www.who.int/europe/news/item/25-09-2024-teens--screens-and-mental-health</a
-          >
-        </p>
-      </div>
+    <!-- "Research Offers Insights" Section (Text Only, full width) -->
+    <section class="content-block full-text-block">
+      <h3 class="block-heading">
+        Seeing Changes in Your Son's Gaming Behaviour
+      </h3>
+      <h2 class="subheading">Research Offers Insights</h2>
+      <p class="block-paragraph">
+        As parents, you're often the first to notice subtle shifts in your
+        teenager's behaviour. If excessive gaming seems linked to increased
+        irritability, withdrawal, or academic struggles, your concerns are
+        valid. Research is exploring these connections.
+      </p>
+      <p class="block-paragraph">
+        Studies suggest that significant gaming can be associated with emotional
+        and behavioural changes in teens (Anderson et al., 2010). The WHO
+        highlights the importance of balanced screen time for adolescent mental
+        health (WHO, 2024).
+      </p>
+      <p class="block-source">
+        Source: World Health Organization. (2024, September 25). Retrieved from
+        <a
+          href="https://www.who.int/europe/news/item/25-09-2024-teens--screens-and-mental-health"
+          target="_blank"
+          >https://www.who.int/europe/news/item/25-09-2024-teens--screens-and-mental-health</a
+        >
+      </p>
     </section>
 
-    <!-- "You Might Be Observing" Section with Image on the Right -->
+    <!-- "You Might Be Observing" Section with Image on the Right (Stacked Images) -->
     <section class="content-block image-row reverse-layout">
       <!-- Text Column -->
       <div class="text-col">
-        <h3 class="block-heading">
-          Seeing Changes in Your Son's Gaming Behaviour
-        </h3>
         <h2 class="subheading">You Might Be Observing</h2>
         <ul class="observing-list">
           <li>
@@ -81,23 +67,25 @@
           46(5), 501-505.
         </p>
       </div>
-
-      <!-- Image Column -->
-      <div class="image-col">
-        <!-- Replace with your desired image path -->
+      <!-- Image Column (Stacked Vertically) -->
+      <div class="image-col stack-vertical">
+        <!-- First image -->
         <img
-          src="src/assets/6.png"
+          src="@/assets/might_observe.jpg"
           alt="Observations Illustration"
-          class="content-image"
+          class="stacked-image"
+        />
+        <!-- Second image -->
+        <img
+          src="@/assets/extra_observation.jpg"
+          alt="Additional Observations Illustration"
+          class="stacked-image"
         />
       </div>
     </section>
 
     <!-- "Data Points" Section -->
     <section class="content-block">
-      <h3 class="block-heading">
-        Seeing Changes in Your Son's Gaming Behaviour
-      </h3>
       <h2 class="subheading">Data Points</h2>
       <div class="data-points">
         <div class="data-point">
@@ -155,14 +143,16 @@ export default {
   color: #666;
 }
 
-/* Content Block */
-.content-block {
+/* Content Block for Text Only (First Box) */
+.full-text-block {
   margin-bottom: 2rem;
   background-color: #fff;
   padding: 1rem 1.5rem;
   border-radius: 4px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 }
+
+/* Standard block styles */
 .block-heading {
   font-size: 1rem;
   text-transform: uppercase;
@@ -221,15 +211,6 @@ export default {
   color: #333;
 }
 
-/* Links */
-.block-source a {
-  color: #3498db;
-  text-decoration: underline;
-}
-.block-source a:hover {
-  color: #217dbb;
-}
-
 /* Image + Text Row (for side-by-side layout) */
 .image-row {
   display: flex;
@@ -239,18 +220,36 @@ export default {
 .image-col {
   flex: 1;
   max-width: 50%;
-  /* Ensure images don’t overflow the container */
   overflow: hidden;
 }
 .text-col {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
+/* Content Image */
 .content-image {
   width: 100%;
   height: auto;
   border-radius: 4px;
-  object-fit: contain;
+  margin-bottom: 1rem;
 }
+
+/* For the second box, stack the images vertically and make them bigger */
+.stack-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.stacked-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Reverse Layout for second block */
 .reverse-layout {
   flex-direction: row-reverse;
 }

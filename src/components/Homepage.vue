@@ -19,9 +19,7 @@
         </div>
         <nav class="nav-menu">
           <ul>
-            <li>
-              <router-link to="/" class="nav-link">Home</router-link>
-            </li>
+            <li><router-link to="/" class="nav-link">Home</router-link></li>
             <!-- Additional nav items can be added here if needed -->
           </ul>
         </nav>
@@ -144,7 +142,7 @@
     <div v-if="activeModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
         <button class="modal-close" @click="closeModal">&times;</button>
-        <!-- Render the NoticingShifts or GamingPull component based on activeModal -->
+        <!-- Render NoticingShifts if activeModal equals 'noticing', otherwise GamingPull -->
         <NoticingShifts v-if="activeModal === 'noticing'" />
         <GamingPull v-else-if="activeModal === 'gamingpull'" />
       </div>
@@ -155,7 +153,7 @@
 <script>
 import { defineComponent } from "vue";
 import NoticingShifts from "@/components/NoticingShifts.vue";
-import GamingPull from "@/components/GamingPull.vue"; // Import GamingPull component
+import GamingPull from "@/components/GamingPull.vue"; // Ensure this component exists
 
 export default defineComponent({
   name: "HomePage",
@@ -173,12 +171,12 @@ export default defineComponent({
       ],
       currentImage: 0,
       intervalId: null,
-      activeModal: null, // "noticing" or "gamingpull"
+      activeModal: null, // Can be "noticing" or "gamingpull"
     };
   },
   methods: {
     openModal(modalName) {
-      // Allow triggering for "noticing" and "gamingpull" modals
+      // Allow triggering for both "noticing" and "gamingpull"
       if (modalName === "noticing" || modalName === "gamingpull") {
         this.activeModal = modalName;
       }
@@ -250,8 +248,8 @@ export default defineComponent({
   align-items: center;
 }
 .logo-icon {
-  width: 50px;
-  height: 50px;
+  width: 110px;
+  height: 90px;
   margin-right: 0.5rem;
 }
 .logo-text {
@@ -397,25 +395,18 @@ export default defineComponent({
 .section.understanding-play {
   padding: 3rem 0;
 }
+.section.understanding-play .container {
+  display: flex;
+  justify-content: center; /* center the entire container content */
+}
+.section.understanding-play .text-layer {
+  margin: 0 auto; /* center the translucent box */
+}
 .placeholder-image img {
   width: 100%;
+  max-width: 350px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Word Cloud Section */
-.wordcloud-section {
-  margin-bottom: 2rem;
-}
-.word-cloud {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 15px;
-  padding: 1rem;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  min-height: 300px;
 }
 
 /* Footer */

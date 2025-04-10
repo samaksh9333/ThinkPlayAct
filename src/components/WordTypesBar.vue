@@ -337,8 +337,8 @@ export default defineComponent({
   align-items: center;
 }
 .logo-icon {
-  width: 50px;
-  height: 50px;
+  width: 110px;
+  height: 90px;
   margin-right: 0.5rem;
 }
 .logo-text {
@@ -367,8 +367,7 @@ export default defineComponent({
   margin: 4rem auto 2rem;
   padding: 0 1rem;
   z-index: 1;
-  /* For mobile, we reserve space so content doesn't shift */
-  min-height: calc(100vh - 180px); /* approximate height for header+footer */
+  min-height: calc(100vh - 180px);
 }
 
 /* Section Headings */
@@ -388,7 +387,7 @@ export default defineComponent({
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 1rem;
-  min-height: 300px; /* reserve space */
+  min-height: 300px;
   overflow-y: auto;
 }
 
@@ -403,16 +402,18 @@ export default defineComponent({
   font-size: 1.2rem;
 }
 
-/* Word Cloud Container using CSS Grid */
+/* Word Cloud Container - changed from grid to flex layout for scattering */
 .word-cloud {
-  display: grid;
-  grid-template-columns: repeat(minmax(150px, 1fr));
-  gap: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   padding: 1rem;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
-  min-height: 300px; /* reserve space */
+  min-height: 300px;
   overflow-y: auto;
 }
 
@@ -447,7 +448,8 @@ export default defineComponent({
     flex-direction: column;
     align-items: center;
     height: auto;
-    margin-top: 1rem;
+    margin: 1rem auto 0;
+    margin-left: 0;
   }
   .hero-image,
   .hero-content {
@@ -466,7 +468,7 @@ export default defineComponent({
     overflow-y: auto;
   }
   .word-cloud {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    flex-wrap: wrap;
     gap: 10px;
     padding: 0.5rem;
     height: 250px;

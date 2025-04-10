@@ -20,17 +20,7 @@
         <nav class="nav-menu">
           <ul>
             <li><router-link to="/" class="nav-link">Home</router-link></li>
-            <!-- <li>
-              <router-link to="/about" class="nav-link">About</router-link>
-            </li>
-            <li>
-              <router-link to="/resources" class="nav-link"
-                >Resources</router-link
-              >
-            </li>
-            <li>
-              <router-link to="/contact" class="nav-link">Contact</router-link>
-            </li> -->
+            <!-- Additional nav items commented out -->
           </ul>
         </nav>
       </div>
@@ -190,11 +180,11 @@ export default defineComponent({
       };
     };
 
-    // Fetch aggregated data for the bar graph
+    // Fetch aggregated data for the bar graph from the backend using environment variable
     const fetchChartData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/word-types"
+          `${process.env.VUE_APP_API_URL}/api/word-types`
         );
         const data = response.data;
         const labels = Object.keys(data);
@@ -214,11 +204,11 @@ export default defineComponent({
       }
     };
 
-    // Fetch unique negative words for the word cloud
+    // Fetch unique negative words for the word cloud using backend endpoint
     const fetchNegativeWords = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/negative-words"
+          `${process.env.VUE_APP_API_URL}/api/negative-words`
         );
         rawWords.value = response.data;
       } catch (error) {
@@ -387,7 +377,7 @@ export default defineComponent({
   }
   .hero-image,
   .hero-content {
-    flex: 1 1 100%;
+    width: 100%;
     text-align: center;
     height: auto;
   }

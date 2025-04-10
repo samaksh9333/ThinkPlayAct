@@ -20,17 +20,7 @@
         <nav class="nav-menu">
           <ul>
             <li><router-link to="/" class="nav-link">Home</router-link></li>
-            <!-- <li>
-              <router-link to="/about" class="nav-link">About</router-link>
-            </li>
-            <li>
-              <router-link to="/resources" class="nav-link"
-                >Resources</router-link
-              >
-            </li>
-            <li>
-              <router-link to="/contact" class="nav-link">Contact</router-link>
-            </li> -->
+            <!-- Additional nav items, if needed -->
           </ul>
         </nav>
       </div>
@@ -63,7 +53,7 @@
               impact of the gaming world, and learn what subtle cues to look
               for.
             </p>
-            <button class="cta-button">Know More</button>
+            <!-- The modal trigger button removed from hero section -->
           </div>
         </div>
       </div>
@@ -78,8 +68,9 @@
         </div>
         <!-- Cards row -->
         <div class="cards">
-          <div class="card text-layer">
-            <h3 class="card-title">Identifying Influences</h3>
+          <!-- Noticing Shifts Card: Clickable to trigger the modal -->
+          <div class="card text-layer clickable-card" @click="openModal">
+            <h3 class="card-title">Noticing Shifts</h3>
             <p class="card-text">
               Explore common signs of gaming-related behavioral changes and
               potential triggers.
@@ -109,7 +100,6 @@
         <div class="text-layer">
           <h2 class="section-title">Understanding Their Play</h2>
           <div class="placeholder-image">
-            <!-- The keyboard.png image is wrapped in a router-link for navigation -->
             <router-link to="/word-types">
               <img
                 src="@/assets/keyboard.png"
@@ -139,12 +129,25 @@
         </div>
       </div>
     </footer>
+
+    <!-- Modal Overlay for NoticingShifts -->
+    <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+      <div class="modal-content">
+        <button class="modal-close" @click="closeModal">&times;</button>
+        <!-- Render the NoticingShifts component -->
+        <NoticingShifts />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+import NoticingShifts from "@/components/NoticingShifts.vue"; // Adjust the path as needed
+
+export default defineComponent({
   name: "HomePage",
+  components: { NoticingShifts },
   data() {
     return {
       images: [
@@ -155,7 +158,16 @@ export default {
       ],
       currentImage: 0,
       intervalId: null,
+      showModal: false,
     };
+  },
+  methods: {
+    openModal() {
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+    },
   },
   mounted() {
     // Automatically switch images every 3.5 seconds
@@ -168,14 +180,14 @@ export default {
       clearInterval(this.intervalId);
     }
   },
-};
+});
 </script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
 :root {
-  --primary-color: #000; /* Black shade */
+  --primary-color: #000;
   --secondary-color: #ffffff;
   --accent-color: #3498db;
   --light-gray: #f7f7f7;
@@ -260,7 +272,7 @@ export default {
   gap: 1.5rem;
   flex-wrap: nowrap;
   height: 400px;
-  margin-top: 2rem; /* Moves hero down from navbar */
+  margin-top: 2rem;
   margin-left: 2rem;
 }
 .hero-image,
@@ -276,7 +288,7 @@ export default {
   object-fit: cover;
 }
 
-/* Text Layer: Black translucent overlay */
+/* Text Layer for Hero Section */
 .text-layer {
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
@@ -313,21 +325,18 @@ export default {
 }
 
 /* Section Titles */
+.section-heading,
 .section-title {
   text-align: center;
   font-size: 2rem;
-  margin: 0;
-}
-/* Update: Change text color of "Their Game World" heading to white */
-.section-title-box .section-title {
-  color: #fff;
+  margin-bottom: 1rem;
 }
 
 /* "Their Game World" Section */
 .game-world-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 3rem 1rem; /* Spacing around the section */
+  padding: 3rem 1rem;
   text-align: center;
 }
 .section-title-box {
@@ -337,10 +346,13 @@ export default {
   padding: 5px 15px;
   margin-bottom: 2rem;
 }
+.section-title-box .section-title {
+  color: #fff;
+}
 .cards {
   display: flex;
   gap: 1.5rem;
-  justify-content: center; /* Center all cards horizontally */
+  justify-content: center;
   flex-wrap: wrap;
 }
 .card.text-layer {
@@ -350,7 +362,8 @@ export default {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transition: transform 0.3s, box-shadow 0.3s;
-  width: 300px; /* Fixed width for uniform cards */
+  width: 300px;
+  cursor: pointer;
 }
 .card.text-layer:hover {
   transform: translateY(-5px);
@@ -420,7 +433,40 @@ export default {
   text-decoration: underline;
 }
 
-/* Responsive */
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* Responsive Styles */
 @media (max-width: 768px) {
   .hero-container {
     flex-direction: column;

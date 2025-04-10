@@ -6,14 +6,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Configure PostgreSQL connection using your Azure details
 const pool = new Pool({
-  user: "IE5021_ADMIN",
-  host: "ie-server.postgres.database.azure.com",
-  database: "postgres", // Update if your database name is different
-  password: "IEproject21",
-  port: 5432,
-  ssl: { rejectUnauthorized: false }, // Required for Azure PostgreSQL
+  user: process.env.DB_USER || "IE5021_ADMIN",
+  host: process.env.DB_HOST || "ie-server.postgres.database.azure.com",
+  database: process.env.DB_DATABASE || "postgres",
+  password: process.env.DB_PASSWORD || "IEproject21",
+  port: process.env.DB_PORT || 5432,
+  ssl: { rejectUnauthorized: false },
 });
 
 /*

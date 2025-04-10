@@ -19,7 +19,9 @@
         </div>
         <nav class="nav-menu">
           <ul>
-            <li><router-link to="/" class="nav-link">Home</router-link></li>
+            <li>
+              <router-link to="/" class="nav-link">Home</router-link>
+            </li>
             <!-- Additional nav items can be added if needed -->
           </ul>
         </nav>
@@ -46,7 +48,7 @@
             <strong style="color: #f1c40f">NoobRelated</strong> (yellow),
             <strong style="color: #e67e22">SpecificTarget</strong> (orange), and
             <strong style="color: #34495e">FilteredText</strong> (dark
-            blue/gray). <br /><br />
+            blue/gray).<br /><br />
             <em>
               Source: Murnion et al. (2018), "Machine learning and semantic
               analysis of in-game chat for cyber bullying", Computers &amp;
@@ -58,7 +60,7 @@
 
       <!-- Word Cloud Section -->
       <section class="wordcloud-section">
-        <h2 class="section-heading">Word Cloud</h2>
+        <h2 class="section-heading">Negative Word Cloud</h2>
         <div class="word-cloud">
           <span
             v-for="wordObj in processedWords"
@@ -207,13 +209,13 @@ export default defineComponent({
           return {
             original: w,
             censored: censorWord(w),
-            category: getCategory(lower).split(", ")[0], // Use first category if multiple exist.
+            // Use only the first category if there are multiple
+            category: getCategory(lower).split(", ")[0],
           };
         });
     });
 
     // Generate a style for each word in the cloud.
-    // Using CSS Grid, this function now returns styles without absolute positioning.
     const wordStyle = (wordObj) => {
       const size = Math.floor(Math.random() * 20) + 40; // Font size between 40px and 60px.
       const color = categoryColors[wordObj.category] || "#3498db";
@@ -229,7 +231,7 @@ export default defineComponent({
       };
     };
 
-    // Fetch aggregated data for the bar graph using the backend URL from the environment.
+    // Fetch aggregated data for the bar graph from the backend using the environment variable.
     const fetchChartData = async () => {
       try {
         const response = await axios.get(
@@ -303,6 +305,7 @@ export default defineComponent({
   background-color: var(--secondary-color);
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Background Video */
@@ -351,6 +354,7 @@ export default defineComponent({
   color: var(--secondary-color);
   text-decoration: none;
   font-size: 1rem;
+  margin: 2rem;
   transition: color 0.3s;
 }
 .nav-link:hover {
@@ -363,6 +367,8 @@ export default defineComponent({
   margin: 4rem auto 2rem;
   padding: 0 1rem;
   z-index: 1;
+  /* For mobile, we reserve space so content doesn't shift */
+  min-height: calc(100vh - 180px); /* approximate height for header+footer */
 }
 
 /* Section Headings */
@@ -382,6 +388,8 @@ export default defineComponent({
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 1rem;
+  min-height: 300px; /* reserve space */
+  overflow-y: auto;
 }
 
 /* Chart Description Box */
@@ -395,20 +403,17 @@ export default defineComponent({
   font-size: 1.2rem;
 }
 
-/* Word Cloud Container using CSS Grid for non-overlap */
+/* Word Cloud Container using CSS Grid */
 .word-cloud {
-  position: relative;
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(150px, 1fr)
-  ); /* increased min width */
+  grid-template-columns: repeat(minmax(150px, 1fr));
   gap: 15px;
   padding: 1rem;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
-  min-height: 300px;
+  min-height: 300px; /* reserve space */
+  overflow-y: auto;
 }
 
 /* Footer */
@@ -441,6 +446,8 @@ export default defineComponent({
   .hero-container {
     flex-direction: column;
     align-items: center;
+    height: auto;
+    margin-top: 1rem;
   }
   .hero-image,
   .hero-content {
@@ -449,14 +456,41 @@ export default defineComponent({
     height: auto;
   }
   .text-layer {
+    width: 95%;
     height: auto;
+    padding: 15px;
   }
-  .cards {
-    flex-direction: column;
-    align-items: center;
+  .chart-container {
+    height: 250px;
+    min-height: 250px;
+    overflow-y: auto;
   }
-  .card {
-    flex: 1 1 100%;
+  .word-cloud {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    padding: 0.5rem;
+    height: 250px;
+    min-height: 250px;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-area {
+    padding: 0 0.5rem;
+  }
+  .section-heading {
+    font-size: 1.75rem;
+  }
+  .logo-text {
+    font-size: 1.5rem;
+  }
+  .nav-link {
+    font-size: 0.9rem;
+  }
+  .footer-textbox,
+  .text-layer {
+    font-size: 0.9rem;
   }
 }
 </style>

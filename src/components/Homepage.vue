@@ -19,7 +19,9 @@
         </div>
         <nav class="nav-menu">
           <ul>
-            <li><router-link to="/" class="nav-link">Home</router-link></li>
+            <li>
+              <router-link to="/" class="nav-link">Home</router-link>
+            </li>
             <!-- Additional nav items can be added here if needed -->
           </ul>
         </nav>
@@ -86,8 +88,11 @@
               interactions and friendships.
             </p>
           </div>
-          <!-- Gaming's Pull Card (static) -->
-          <div class="card text-layer">
+          <!-- Gaming's Pull Card (clickable) -->
+          <div
+            class="card text-layer clickable-card"
+            @click="openModal('gamingpull')"
+          >
             <h3 class="card-title">Gaming’s Pull</h3>
             <p class="card-text">
               Dive into the immersive nature of modern games and how they keep
@@ -135,12 +140,13 @@
       </div>
     </footer>
 
-    <!-- Modal Overlay for NoticingShifts -->
+    <!-- Modal Overlay for NoticingShifts and GamingPull -->
     <div v-if="activeModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
         <button class="modal-close" @click="closeModal">&times;</button>
-        <!-- Render the NoticingShifts component when modal is active -->
-        <NoticingShifts />
+        <!-- Render the NoticingShifts or GamingPull component based on activeModal -->
+        <NoticingShifts v-if="activeModal === 'noticing'" />
+        <GamingPull v-else-if="activeModal === 'gamingpull'" />
       </div>
     </div>
   </div>
@@ -149,11 +155,13 @@
 <script>
 import { defineComponent } from "vue";
 import NoticingShifts from "@/components/NoticingShifts.vue";
+import GamingPull from "@/components/GamingPull.vue"; // Import GamingPull component
 
 export default defineComponent({
   name: "HomePage",
   components: {
     NoticingShifts,
+    GamingPull,
   },
   data() {
     return {
@@ -165,12 +173,13 @@ export default defineComponent({
       ],
       currentImage: 0,
       intervalId: null,
-      activeModal: null, // Set to "noticing" when the Noticing Shifts modal is open
+      activeModal: null, // "noticing" or "gamingpull"
     };
   },
   methods: {
     openModal(modalName) {
-      if (modalName === "noticing") {
+      // Allow triggering for "noticing" and "gamingpull" modals
+      if (modalName === "noticing" || modalName === "gamingpull") {
         this.activeModal = modalName;
       }
     },
@@ -349,11 +358,11 @@ export default defineComponent({
 }
 .section-title-box {
   display: inline-block;
-  background: rgba(0, 0, 0, 0.6); /* Black translucent background */
+  background: rgba(0, 0, 0, 0.6);
   border-radius: 8px;
   padding: 5px 15px;
   margin-bottom: 2rem;
-  color: #fff; /* White text */
+  color: #fff;
 }
 .cards {
   display: flex;

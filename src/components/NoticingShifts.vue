@@ -6,64 +6,91 @@
       <p class="hero-subtitle">Learn how gaming might<br />be playing a role</p>
     </section>
 
-    <!-- "Research Offers Insights" Section -->
-    <section class="content-block">
-      <h3 class="block-heading">
-        Seeing Changes in Your Son's Gaming Behaviour
-      </h3>
-      <h2 class="subheading">Research Offers Insights</h2>
-      <p class="block-paragraph">
-        As parents, you're often the first to notice subtle shifts in your
-        teenager's behaviour. If excessive gaming seems linked to increased
-        irritability, withdrawal, or academic struggles, your concerns are
-        valid. Research is exploring these connections.
-      </p>
-      <p class="block-paragraph">
-        Studies suggest that significant gaming can be associated with emotional
-        and behavioural changes in teens (Anderson et al., 2010). The WHO
-        highlights the importance of balanced screen time for adolescent mental
-        health (WHO, 2024).
-      </p>
-      <p class="block-source">
-        Source: World Health Organization. (2024, September 25). Retrieved from
-        <a
-          href="https://www.who.int/europe/news/item/25-09-2024-teens--screens-and-mental-health"
-          target="_blank"
-          >https://www.who.int/europe/news/item/25-09-2024-teens--screens-and-mental-health</a
-        >
-      </p>
+    <!-- "Research Offers Insights" Section with Image on the Left -->
+    <section class="content-block image-row">
+      <!-- Image Column -->
+      <div class="image-col">
+        <!-- Replace with your desired image path -->
+        <img
+          src="src/assets/5.png"
+          alt="Research Insights Illustration"
+          class="content-image"
+        />
+      </div>
+
+      <!-- Text Column -->
+      <div class="text-col">
+        <h3 class="block-heading">
+          Seeing Changes in Your Son's Gaming Behaviour
+        </h3>
+        <h2 class="subheading">Research Offers Insights</h2>
+        <p class="block-paragraph">
+          As parents, you're often the first to notice subtle shifts in your
+          teenager's behaviour. If excessive gaming seems linked to increased
+          irritability, withdrawal, or academic struggles, your concerns are
+          valid. Research is exploring these connections.
+        </p>
+        <p class="block-paragraph">
+          Studies suggest that significant gaming can be associated with
+          emotional and behavioural changes in teens (Anderson et al., 2010).
+          The WHO highlights the importance of balanced screen time for
+          adolescent mental health (WHO, 2024).
+        </p>
+        <p class="block-source">
+          Source: World Health Organization. (2024, September 25). Retrieved
+          from
+          <a
+            href="https://www.who.int/europe/news/item/25-09-2024-teens--screens-and-mental-health"
+            target="_blank"
+            >https://www.who.int/europe/news/item/25-09-2024-teens--screens-and-mental-health</a
+          >
+        </p>
+      </div>
     </section>
 
-    <!-- "You Might Be Observing" Section -->
-    <section class="content-block">
-      <h3 class="block-heading">
-        Seeing Changes in Your Son's Gaming Behaviour
-      </h3>
-      <h2 class="subheading">You Might Be Observing</h2>
-      <ul class="observing-list">
-        <li>
-          <strong>Increased Irritability/Aggression:</strong> Some research
-          links frequent gaming to heightened aggression in adolescents
-          (Anderson et al., 2010).
-        </li>
-        <li>
-          <strong>Sleep Issues:</strong> Late-night gaming can disrupt sleep
-          patterns, impacting mood and focus (Anderson et al., 2010).
-        </li>
-        <li>
-          <strong>Social Withdrawal:</strong> Intense gaming can sometimes lead
-          to less engagement in real-world relationships (Anderson et al.,
-          2010).
-        </li>
-        <li>
-          <strong>Academic Slips:</strong> Time spent gaming can sometimes take
-          away from schoolwork (Anderson et al., 2010).
-        </li>
-      </ul>
-      <p class="block-source">
-        Source: Anderson, C. A., et al. (2010). Journal of Adolescent Health,
-        46(5), 501-505.
-      </p>
+    <!-- "You Might Be Observing" Section with Image on the Right -->
+    <section class="content-block image-row reverse-layout">
+      <!-- Text Column -->
+      <div class="text-col">
+        <h3 class="block-heading">
+          Seeing Changes in Your Son's Gaming Behaviour
+        </h3>
+        <h2 class="subheading">You Might Be Observing</h2>
+        <ul class="observing-list">
+          <li>
+            <strong>Increased Irritability/Aggression:</strong> Some research
+            links frequent gaming to heightened aggression in adolescents
+            (Anderson et al., 2010).
+          </li>
+          <li>
+            <strong>Sleep Issues:</strong> Late-night gaming can disrupt sleep
+            patterns, impacting mood and focus (Anderson et al., 2010).
+          </li>
+          <li>
+            <strong>Social Withdrawal:</strong> Intense gaming can sometimes
+            lead to less engagement in real-world relationships (Anderson et
+            al., 2010).
+          </li>
+          <li>
+            <strong>Academic Slips:</strong> Time spent gaming can sometimes
+            take away from schoolwork (Anderson et al., 2010).
+          </li>
+        </ul>
+        <p class="block-source">
+          Source: Anderson, C. A., et al. (2010). Journal of Adolescent Health,
+          46(5), 501-505.
+        </p>
+      </div>
+
+      <!-- Image Column -->
+      <div class="image-col">
+        <!-- Replace with your desired image path -->
+        <img
+          src="src/assets/6.png"
+          alt="Observations Illustration"
+          class="content-image"
+        />
+      </div>
     </section>
 
     <!-- "Data Points" Section -->
@@ -201,5 +228,44 @@ export default {
 }
 .block-source a:hover {
   color: #217dbb;
+}
+
+/* Image + Text Row (for side-by-side layout) */
+.image-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+.image-col {
+  flex: 1;
+  max-width: 50%;
+  /* Ensure images don’t overflow the container */
+  overflow: hidden;
+}
+.text-col {
+  flex: 1;
+}
+.content-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  object-fit: contain;
+}
+.reverse-layout {
+  flex-direction: row-reverse;
+}
+
+/* Responsive for small screens */
+@media (max-width: 768px) {
+  .image-row {
+    flex-direction: column !important;
+  }
+  .image-col,
+  .text-col {
+    max-width: 100% !important;
+  }
+  .reverse-layout {
+    flex-direction: column !important;
+  }
 }
 </style>

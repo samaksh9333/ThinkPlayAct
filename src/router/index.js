@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../components/Homepage.vue";
 import WordTypesBar from "../components/WordTypesBar.vue";
 import NoticingShifts from "../components/NoticingShifts.vue"; // Adjust the path if needed
+import DecodingDigitalLife from "@/components/DecodingDigitalLife.vue";
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: "/noticing-shifts",
     name: "NoticingShifts",
     component: NoticingShifts,
+  },
+  {
+    path: "/decoding-digital-life",
+    name: "DecodingDigitalLife",
+    component: DecodingDigitalLife,
   },
 ];
 

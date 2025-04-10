@@ -20,7 +20,7 @@
         <nav class="nav-menu">
           <ul>
             <li><router-link to="/" class="nav-link">Home</router-link></li>
-            <!-- Additional nav items, if needed -->
+            <!-- Additional nav items can be added here if needed -->
           </ul>
         </nav>
       </div>
@@ -41,7 +41,6 @@
             />
           </transition>
         </div>
-
         <!-- Text Content (Right Column) with Translucent Overlay -->
         <div class="hero-content">
           <div class="text-layer hero-textbox">
@@ -53,7 +52,7 @@
               impact of the gaming world, and learn what subtle cues to look
               for.
             </p>
-            <!-- The modal trigger button removed from hero section -->
+            <!-- No modal trigger button here -->
           </div>
         </div>
       </div>
@@ -62,20 +61,24 @@
     <!-- "Their Game World" Section -->
     <section class="section game-world">
       <div class="container game-world-container">
-        <!-- Small black box around the heading -->
+        <!-- Wrap the heading in a black box with white text -->
         <div class="section-title-box">
-          <h2 class="section-title">Their Game World</h2>
+          <h2 class="section-heading">Their Game World</h2>
         </div>
-        <!-- Cards row -->
+        <!-- Cards Row -->
         <div class="cards">
-          <!-- Noticing Shifts Card: Clickable to trigger the modal -->
-          <div class="card text-layer clickable-card" @click="openModal">
+          <!-- Noticing Shifts Card (clickable) -->
+          <div
+            class="card text-layer clickable-card"
+            @click="openModal('noticing')"
+          >
             <h3 class="card-title">Noticing Shifts</h3>
             <p class="card-text">
               Explore common signs of gaming-related behavioral changes and
               potential triggers.
             </p>
           </div>
+          <!-- Decoding Digital Life Card (static) -->
           <div class="card text-layer">
             <h3 class="card-title">Decoding Digital Life</h3>
             <p class="card-text">
@@ -83,6 +86,7 @@
               interactions and friendships.
             </p>
           </div>
+          <!-- Gaming's Pull Card (static) -->
           <div class="card text-layer">
             <h3 class="card-title">Gaming’s Pull</h3>
             <p class="card-text">
@@ -98,8 +102,9 @@
     <section class="section understanding-play">
       <div class="container">
         <div class="text-layer">
-          <h2 class="section-title">Understanding Their Play</h2>
+          <h2 class="section-heading">Understanding Their Play</h2>
           <div class="placeholder-image">
+            <!-- The keyboard.png image is wrapped in a router-link for navigation -->
             <router-link to="/word-types">
               <img
                 src="@/assets/keyboard.png"
@@ -131,10 +136,10 @@
     </footer>
 
     <!-- Modal Overlay for NoticingShifts -->
-    <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+    <div v-if="activeModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
         <button class="modal-close" @click="closeModal">&times;</button>
-        <!-- Render the NoticingShifts component -->
+        <!-- Render the NoticingShifts component when modal is active -->
         <NoticingShifts />
       </div>
     </div>
@@ -143,11 +148,13 @@
 
 <script>
 import { defineComponent } from "vue";
-import NoticingShifts from "@/components/NoticingShifts.vue"; // Adjust the path as needed
+import NoticingShifts from "@/components/NoticingShifts.vue";
 
 export default defineComponent({
   name: "HomePage",
-  components: { NoticingShifts },
+  components: {
+    NoticingShifts,
+  },
   data() {
     return {
       images: [
@@ -158,19 +165,20 @@ export default defineComponent({
       ],
       currentImage: 0,
       intervalId: null,
-      showModal: false,
+      activeModal: null, // Set to "noticing" when the Noticing Shifts modal is open
     };
   },
   methods: {
-    openModal() {
-      this.showModal = true;
+    openModal(modalName) {
+      if (modalName === "noticing") {
+        this.activeModal = modalName;
+      }
     },
     closeModal() {
-      this.showModal = false;
+      this.activeModal = null;
     },
   },
   mounted() {
-    // Automatically switch images every 3.5 seconds
     this.intervalId = setInterval(() => {
       this.currentImage = (this.currentImage + 1) % this.images.length;
     }, 3500);
@@ -187,7 +195,7 @@ export default defineComponent({
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
 :root {
-  --primary-color: #000;
+  --primary-color: #000; /* Black shade for backgrounds */
   --secondary-color: #ffffff;
   --accent-color: #3498db;
   --light-gray: #f7f7f7;
@@ -324,7 +332,7 @@ export default defineComponent({
   background-color: #217dbb;
 }
 
-/* Section Titles */
+/* Section Headings */
 .section-heading,
 .section-title {
   text-align: center;
@@ -341,13 +349,11 @@ export default defineComponent({
 }
 .section-title-box {
   display: inline-block;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.6); /* Black translucent background */
   border-radius: 8px;
   padding: 5px 15px;
   margin-bottom: 2rem;
-}
-.section-title-box .section-title {
-  color: #fff;
+  color: #fff; /* White text */
 }
 .cards {
   display: flex;
@@ -394,7 +400,7 @@ export default defineComponent({
 }
 .word-cloud {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 15px;
   padding: 1rem;
   background-color: #fff;
@@ -472,7 +478,8 @@ export default defineComponent({
     flex-direction: column;
     align-items: center;
     height: auto;
-    margin-top: 1rem;
+    margin: 1rem auto 0;
+    margin-left: 0;
   }
   .hero-image,
   .hero-content {
@@ -480,19 +487,47 @@ export default defineComponent({
     text-align: center;
     height: auto;
   }
-  .hero-title {
-    font-size: 2rem;
-  }
-  .hero-description {
-    font-size: 1rem;
+  .text-layer {
+    width: 95%;
+    height: auto;
+    padding: 15px;
   }
   .cards {
     flex-direction: column;
     align-items: center;
   }
   .card.text-layer {
-    width: 100%;
+    width: 90%;
     max-width: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-area {
+    padding: 0 0.5rem;
+  }
+  .chart-container {
+    height: 250px;
+    padding: 0.5rem;
+  }
+  .word-cloud {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    padding: 0.5rem;
+  }
+  .section-heading,
+  .section-title {
+    font-size: 1.75rem;
+  }
+  .logo-text {
+    font-size: 1.5rem;
+  }
+  .nav-link {
+    font-size: 0.9rem;
+  }
+  .footer-textbox,
+  .text-layer {
+    font-size: 0.9rem;
   }
 }
 </style>

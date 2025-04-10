@@ -20,7 +20,7 @@
         <nav class="nav-menu">
           <ul>
             <li><router-link to="/" class="nav-link">Home</router-link></li>
-            <!-- Additional nav items commented out -->
+            <!-- Additional nav items can be added if needed -->
           </ul>
         </nav>
       </div>
@@ -34,16 +34,36 @@
         <div class="chart-container">
           <Bar v-if="chartData" :data="chartData" :options="chartOptions" />
         </div>
+        <!-- Chart Description Box -->
+        <div class="chart-description text-layer">
+          <p>
+            The bar graph displays the aggregated counts of different word types
+            derived from in-game chat data. Each bar is uniquely color-coded:<br />
+            <strong style="color: #e74c3c">HasBadLanguage</strong> (red),
+            <strong style="color: #2ecc71">IsPositive</strong> (green),
+            <strong style="color: #d35400">HasBadLanguage</strong> (burnt
+            orange), <strong style="color: #9b59b6">IsRacist</strong> (purple),
+            <strong style="color: #f1c40f">NoobRelated</strong> (yellow),
+            <strong style="color: #e67e22">SpecificTarget</strong> (orange), and
+            <strong style="color: #34495e">FilteredText</strong> (dark
+            blue/gray). <br /><br />
+            <em>
+              Source: Murnion et al. (2018), "Machine learning and semantic
+              analysis of in-game chat for cyber bullying", Computers &amp;
+              Security, 76. DOI: 10.1016/j.cose.2018.02.016
+            </em>
+          </p>
+        </div>
       </section>
 
       <!-- Word Cloud Section -->
       <section class="wordcloud-section">
-        <h2 class="section-heading">Negative Word Cloud</h2>
+        <h2 class="section-heading">Word Cloud</h2>
         <div class="word-cloud">
           <span
             v-for="wordObj in processedWords"
             :key="wordObj.original"
-            :style="randomStyle()"
+            :style="wordStyle(wordObj)"
             :title="wordObj.category"
           >
             {{ wordObj.censored }}
@@ -108,7 +128,28 @@ export default defineComponent({
 
     const rawWords = ref([]);
 
-    // Negative keyword arrays (should match your backend arrays)
+    // Local positive words which remain uncensored.
+    const positiveWordsClient = [
+      "well played",
+      "good job",
+      "nice",
+      "awesome",
+      "fantastic",
+      "bravo",
+    ];
+
+    // Mapping of word categories to colors.
+    const categoryColors = {
+      IsPositive: "#2ecc71", // Green
+      HasBadLanguage: "#d35400", // Burnt Orange
+      IsRacist: "#9b59b6", // Purple
+      NoobRelated: "#f1c40f", // Yellow
+      SpecificTarget: "#e67e22", // Orange
+      FilteredText: "#34495e", // Dark Blue/Gray
+      Negative: "#3498db", // Default blue for unspecified negative
+    };
+
+    // Negative keyword arrays.
     const badLanguageWords = [
       "fuck",
       "cunt",
@@ -126,9 +167,10 @@ export default defineComponent({
       "you are useless",
     ];
 
-    // Determine the category for a given word (assumes lowercase)
+    // Determine the category for a given word (assumes lowercase).
     const getCategory = (word) => {
       const categories = [];
+      if (positiveWordsClient.includes(word)) categories.push("IsPositive");
       if (badLanguageWords.includes(word)) categories.push("HasBadLanguage");
       if (racistWords.includes(word)) categories.push("IsRacist");
       if (noobWords.includes(word)) categories.push("NoobRelated");
@@ -138,49 +180,56 @@ export default defineComponent({
             categories.push("SpecificTarget");
         });
       });
-      return categories.join(", ") || "Negative";
+      return categories.length ? categories.join(", ") : "Negative";
     };
 
-    // Censor a word by replacing one random letter with an asterisk.
+    // Censor a word by replacing one random letter with an asterisk unless it's a positive word.
     const censorWord = (word) => {
+      if (positiveWordsClient.includes(word.toLowerCase())) {
+        return word; // Do not censor positive words.
+      }
       if (word.length === 0) return word;
       const idx = Math.floor(Math.random() * word.length);
       return word.substring(0, idx) + "*" + word.substring(idx + 1);
     };
 
-    // Process rawWords into objects with original, censored, and category info.
-    const processedWords = computed(() => {
-      return rawWords.value
-        .filter(
-          (w) =>
-            w.toLowerCase() !== "you" &&
-            w.toLowerCase() !== "your" &&
-            w.trim() !== ""
-        )
-        .map((w) => ({
-          original: w,
-          censored: censorWord(w),
-          category: getCategory(w.toLowerCase()),
-        }));
+    // Merge backend negative words with local positive words.
+    const mergedWords = computed(() => {
+      return [...rawWords.value, ...positiveWordsClient];
     });
 
-    // Generate random style for each word.
-    // Using CSS Grid: words will be placed in grid cells (ensuring no overlap),
-    // but we add random rotation to simulate a "floating" look.
-    const randomStyle = () => {
-      const size = Math.floor(Math.random() * 20) + 40; // Font size between 40px and 60px
-      const colors = ["#3498db", "#e74c3c", "#2ecc71", "#9b59b6", "#f1c40f"];
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      const rotation = Math.floor(Math.random() * 21) - 10; // Rotation between -10deg and +10deg
+    // Process merged words into objects with original, censored, and category info.
+    const processedWords = computed(() => {
+      return mergedWords.value
+        .filter((w) => w.trim() !== "")
+        .map((w) => {
+          const lower = w.toLowerCase();
+          return {
+            original: w,
+            censored: censorWord(w),
+            category: getCategory(lower).split(", ")[0], // Use first category if multiple exist.
+          };
+        });
+    });
+
+    // Generate a style for each word in the cloud.
+    // Using CSS Grid, this function now returns styles without absolute positioning.
+    const wordStyle = (wordObj) => {
+      const size = Math.floor(Math.random() * 20) + 40; // Font size between 40px and 60px.
+      const color = categoryColors[wordObj.category] || "#3498db";
+      const rotation = Math.floor(Math.random() * 21) - 10; // Rotation between -10deg and +10deg.
       return {
         fontSize: `${size}px`,
         color: color,
         transform: `rotate(${rotation}deg)`,
         textAlign: "center",
+        margin: "5px",
+        display: "inline-block",
+        overflowWrap: "break-word",
       };
     };
 
-    // Fetch aggregated data for the bar graph from the backend using environment variable
+    // Fetch aggregated data for the bar graph using the backend URL from the environment.
     const fetchChartData = async () => {
       try {
         const response = await axios.get(
@@ -189,13 +238,17 @@ export default defineComponent({
         const data = response.data;
         const labels = Object.keys(data);
         const values = Object.values(data);
+        // Map labels to their corresponding colors.
+        const backgroundColors = labels.map(
+          (label) => categoryColors[label] || "#3498db"
+        );
         chartData.value = {
           labels,
           datasets: [
             {
               label: "Word Type Counts",
               data: values,
-              backgroundColor: "#3498db",
+              backgroundColor: backgroundColors,
             },
           ],
         };
@@ -204,7 +257,7 @@ export default defineComponent({
       }
     };
 
-    // Fetch unique negative words for the word cloud using backend endpoint
+    // Fetch unique negative words for the word cloud using the backend endpoint.
     const fetchNegativeWords = async () => {
       try {
         const response = await axios.get(
@@ -226,7 +279,7 @@ export default defineComponent({
       chartOptions,
       rawWords,
       processedWords,
-      randomStyle,
+      wordStyle,
     };
   },
 });
@@ -235,7 +288,6 @@ export default defineComponent({
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
-/* CSS Variables (same as homepage) */
 :root {
   --primary-color: #2c3e50;
   --secondary-color: #ffffff;
@@ -253,7 +305,7 @@ export default defineComponent({
   flex-direction: column;
 }
 
-/* Background Video (same as homepage) */
+/* Background Video */
 #bg-video {
   position: fixed;
   top: 0;
@@ -265,7 +317,7 @@ export default defineComponent({
   z-index: -1;
 }
 
-/* Navbar (same as homepage) */
+/* Navbar */
 .navbar {
   background-color: var(--primary-color);
   color: var(--secondary-color);
@@ -305,7 +357,7 @@ export default defineComponent({
   color: var(--accent-color);
 }
 
-/* Content Area (same as homepage) */
+/* Content Area */
 .content-area {
   max-width: 1200px;
   margin: 4rem auto 2rem;
@@ -313,14 +365,14 @@ export default defineComponent({
   z-index: 1;
 }
 
-/* Section Headings (same as homepage) */
+/* Section Headings */
 .section-heading {
   font-size: 2rem;
   color: var(--primary-color);
   margin-bottom: 1rem;
 }
 
-/* Chart Container (same as homepage) */
+/* Chart Container */
 .chart-container {
   position: relative;
   height: 300px;
@@ -332,10 +384,25 @@ export default defineComponent({
   padding: 1rem;
 }
 
-/* Word Cloud Container using CSS Grid to ensure non-overlap while fitting the style */
+/* Chart Description Box */
+.chart-description {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  color: #fff;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+/* Word Cloud Container using CSS Grid for non-overlap */
 .word-cloud {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(150px, 1fr)
+  ); /* increased min width */
   gap: 15px;
   padding: 1rem;
   background-color: #fff;
@@ -344,7 +411,7 @@ export default defineComponent({
   min-height: 300px;
 }
 
-/* Footer (same as homepage) */
+/* Footer */
 .footer {
   background-color: var(--primary-color);
   color: var(--secondary-color);
@@ -369,7 +436,7 @@ export default defineComponent({
   text-decoration: underline;
 }
 
-/* Responsive Styles (same as homepage) */
+/* Responsive Styles */
 @media (max-width: 768px) {
   .hero-container {
     flex-direction: column;
@@ -386,6 +453,7 @@ export default defineComponent({
   }
   .cards {
     flex-direction: column;
+    align-items: center;
   }
   .card {
     flex: 1 1 100%;
